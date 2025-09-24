@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Birthday Wish for My Princess!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6f91; /* A lovely pink */
+            --secondary-color: #ff9a8d; /* A complementary peach */
+            --text-color: #333;
+            --light-text-color: #f8f8f8;
+            --background-gradient-start: #ffe0f0; /* Soft pink start */
+            --background-gradient-end: #fff0f5; /* Even softer pink end */
+            --card-background: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --overlay-bg: rgba(0, 0, 0, 0.6);
+            --glow-color: #ffbbdd; /* For glowing effects */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
+            color: var(--text-color);
+            overflow: hidden; /* Prevent scroll when modals are open */
+            position: relative;
+        }
+
+        /* Overlay for modals */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Name Input Popup */
+        .name-input-popup {
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+        .overlay.active .name-input-popup {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .name-input-popup h3 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        .name-input-popup input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            font-size: 1.1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .name-input-popup input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+        .name-input-popup button {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .name-input-popup button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        .name-input-popup .error-message {
+            color: rgb(220, 50, 50);
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .name-input-popup .error-message.show {
+            opacity: 1;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px; /* Space between sections */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+        }
+        .main-content.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Teddy Bear Section */
+        .teddy-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease-out 0.5s, transform 0.6s ease-out 0.5s;
+        }
+        .main-content.active .teddy-section {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .teddy-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 5px solid var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            position: relative;
+        }
+        .teddy-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center; /* Adjust if needed */
+        }
+        .teddy-text {
+            position: absolute;
+            bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+
+        .surprise-button {
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        .surprise-button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Birthday Letter Section */
+        .birthday-letter-container {
+            position: fixed; /* Use fixed for pop-up behavior */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: clamp(300px, 80vw, 700px);
+            max-height: 90vh;
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            text-align: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s ease-out;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Enable scrolling for long letters */
+            border: 3px solid var(--primary-color);
+        }
+        .birthday-letter-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .birthday-letter-container h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .birthday-letter-container h2 {
+            color: var(--secondary-color);
+            font-size: 1.6em;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .birthday-letter-container p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: left; /* Make paragraphs left-aligned for readability */
+        }
+        .birthday-letter-container .message {
+            margin-top: 30px;
+            font-style: italic;
+            color: #555;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .close-letter-button {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            align-self: center; /* Center the button in flex container */
+            margin-top: 20px;
+        }
+        .close-letter-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Letter closing animation */
+        .birthday-letter-container.closing {
+            transform: translate(100vw, -50%) scale(0.5); /* Move off-screen right */
+            opacity: 0;
+        }
+
+
+        /* Cake Section */
+        .cake-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            margin-top: 40px;
+        }
+        .cake-section.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cake-image-wrapper {
+            position: relative;
+            width: 300px; /* Adjust size */
+            height: 300px;
+        }
+        .cake-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease-out;
+        }
+        .cake-image.cut {
+            opacity: 0; /* Hide original cake */
+        }
+
+        .cake-piece {
+            position: absolute;
+            background-image: url('https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp'); /* NEW CAKE IMAGE */
+            background-size: 300px 300px; /* Match original cake size */
+            width: 150px;
+            height: 150px;
+            opacity: 0;
+            animation: fallAndFade 1.5s ease-out forwards;
+            pointer-events: none; /* Don't interfere with clicks */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center pieces initially */
+        }
+
+        @keyframes fallAndFade {
+            0% { opacity: 1; transform: translate(var(--initial-dx, -50%), var(--initial-dy, -50%)) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.5) rotate(var(--rot)); }
+        }
+
+
+        .cut-cake-button {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        .cut-cake-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Poetry Section */
+        .poetry-section {
+            background: var(--card-background);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            margin-top: 40px;
+            border: 2px solid var(--secondary-color);
+        }
+        .poetry-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .poetry-section h3 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .poetry-section .poem-line {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        .poetry-section .poem-line.author {
+            font-style: italic;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        /* Grand Finale Section */
+        .grand-finale-container {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            max-width: 700px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            padding: 40px 20px;
+            background: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            border: 3px solid var(--primary-color);
+        }
+        .grand-finale-container.active {
+            opacity: 1;
+        }
+
+        .romantic-intro {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 2.8em;
+            margin-bottom: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .final-wish-text {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3.2em;
+            text-shadow: 0 0 12px var(--glow-color), 0 0 25px var(--glow-color);
+            line-height: 1.2;
+            margin: 20px 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-out;
+        }
+
+        .final-romantic-message {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #444;
+            text-align: center;
+            max-width: 550px;
+            margin: 0 auto;
+            transition: opacity 1s ease-in-out, transform 1s ease-out;
+        }
+        .final-romantic-message p {
+            margin-bottom: 1em;
+        }
+        .final-romantic-message .special-emphasis {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-style: italic;
+            margin-top: 25px;
+        }
+        .final-romantic-message .author-finale {
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+
+        /* Decorations (Hearts) */
+        .decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .heart {
+            position: absolute;
+            background-color: var(--primary-color);
+            transform: rotate(-45deg);
+            animation: float 6s infinite ease-in-out;
+            opacity: 0.7;
+            box-shadow: 0 0 8px var(--glow-color); /* Initial glow */
+            filter: brightness(1);
+            transition: filter 0.5s ease-in-out;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+        .heart::before { top: -50%; left: 0; }
+        .heart::after { left: 50%; top: 0; }
+
+        .heart:nth-child(1) { width: 30px; height: 30px; top: 10%; left: 15%; animation-delay: 0s; }
+        .heart:nth-child(2) { width: 20px; height: 20px; top: 30%; left: 80%; animation-delay: 1.5s; opacity: 0.6; }
+        .heart:nth-child(3) { width: 40px; height: 40px; top: 60%; left: 5%; animation-delay: 3s; opacity: 0.8; }
+        .heart:nth-child(4) { width: 25px; height: 25px; top: 85%; left: 70%; animation-delay: 4.5s; opacity: 0.5; }
+        .heart:nth-child(5) { width: 35px; height: 35px; top: 5%; left: 50%; animation-delay: 2s; opacity: 0.75; }
+        .heart:nth-child(6) { width: 28px; height: 28px; top: 45%; left: 20%; animation-delay: 1s; opacity: 0.65; }
+        .heart:nth-child(7) { width: 33px; height: 33px; top: 70%; left: 90%; animation-delay: 3.5s; opacity: 0.7; }
+        .heart:nth-child(8) { width: 22px; height: 22px; top: 20%; left: 60%; animation-delay: 5s; opacity: 0.55; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(-45deg); }
+            50% { transform: translateY(-20px) rotate(-45deg); }
+            100% { transform: translateY(0px) rotate(-45deg); }
+        }
+
+        @keyframes heartPulseGlow {
+            0% { box-shadow: 0 0 8px var(--glow-color); filter: brightness(1); }
+            50% { box-shadow: 0 0 15px var(--glow-color), 0 0 25px var(--glow-color); filter: brightness(1.5); }
+            100% { box-shadow: 0 0 8px var(--glow-color); filter: brightness(1); }
+        }
+        .heart.sparkle {
+            animation: float 6s infinite ease-in-out, heartPulseGlow 2s infinite alternate ease-in-out;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .name-input-popup { padding: 30px; }
+            .name-input-popup h3 { font-size: 1.8em; }
+            .teddy-circle { width: 150px; height: 150px; }
+            .teddy-text { font-size: 1em; }
+            .surprise-button, .cut-cake-button { padding: 12px 25px; font-size: 1em; }
+            .birthday-letter-container { padding: 30px; }
+            .birthday-letter-container h1 { font-size: 2.2em; }
+            .birthday-letter-container h2 { font-size: 1.4em; }
+            .birthday-letter-container p { font-size: 0.95em; }
+            .poetry-section h3 { font-size: 2em; }
+            .poetry-section .poem-line { font-size: 1em; }
+            .romantic-intro { font-size: 2.2em; }
+            .final-wish-text { font-size: 2.5em; margin-top: 30px; }
+            .final-romantic-message { font-size: 1em; }
+            .final-romantic-message .author-finale { font-size: 1.2em; }
+        }
+
+        @media (max-width: 480px) {
+            .name-input-popup { padding: 20px; }
+            .name-input-popup h3 { font-size: 1.5em; }
+            .birthday-letter-container { padding: 20px; }
+            .birthday-letter-container h1 { font-size: 1.8em; }
+            .birthday-letter-container h2 { font-size: 1.2em; }
+            .romantic-intro { font-size: 1.8em; }
+            .final-wish-text { font-size: 2em; margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="decorations">
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+    </div>
+
+    <!-- Name Input Overlay -->
+    <div id="nameOverlay" class="overlay active">
+        <div class="name-input-popup">
+            <h3> Special Surprises for you !</h3>
+            <p>Please enter your lovely name to continue!</p>
+            <input type="text" id="gfNameInput" placeholder="Enter your name...">
+            <button id="submitNameButton">Enter</button>
+            <p id="errorMessage" class="error-message">That's not it! Try again, my dear Miss.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+        <!-- Teddy Bear Section -->
+        <div id="teddySection" class="teddy-section">
+            <div class="teddy-circle">
+                <img src="https://i.ibb.co/V94Bv7r/teddy-bear-on-yellow-background.jpg" alt="Cute Teddy Bear" class="teddy-image"> <!-- NEW TEDDY BEAR IMAGE -->
+                <span class="teddy-text">A surprise awaits!</span>
+            </div>
+            <button id="surpriseButton" class="surprise-button">Click for Your Surprise!</button>
+        </div>
+
+        <!-- Birthday Letter Pop-up (Hidden initially) -->
+        <div id="birthdayLetterContainer" class="birthday-letter-container">
+            <h1>Happy Birthday, My Dearest <span id="displayGfName"></span>!</h1>
+            <h2>Wishing you a day as beautiful as you are!</h2>
+            <p>
+                Every moment with you is a cherished memory, and today, on your special day,
+                I want to celebrate all the joy, love, and laughter you bring into my life.
+                You are the most incredible person I know, and I'm so lucky to have you.
+            </p>
+            <p>
+                May your day be filled with happiness, surprises, and everything wonderful.
+                You deserve the world, and more!
+                Thank you for being you, for your kindness, your warmth, and your endless love.
+                You light up my world in ways I never imagined.
+            </p>
+            <p>
+                Here's to many more birthdays, many more shared dreams, and a lifetime of happiness together.
+                I love you more than words can say.You mean everything for me Jana ✨ 💗!
+            </p>
+            <div class="message">
+                With all my endless love,Fi amanillah 👀<br>
+                Your [Bandar ji ✨]
+            </div>
+            <button id="closeLetterButton" class="close-letter-button">Close Letter</button>
+        </div>
+
+        <!-- Cake Section -->
+        <div id="cakeSection" class="cake-section">
+            <h2>Time for Cake! Make a Wish!</h2>
+            <div class="cake-image-wrapper">
+                <img src="https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp" alt="Realistic Birthday Cake" class="cake-image" id="birthdayCake"> <!-- NEW CAKE IMAGE -->
+                <!-- Cake pieces will be dynamically added here -->
+            </div>
+            <button id="cutCakeButton" class="cut-cake-button">Cut the Cake!</button>
+        </div>
+
+        <!-- Poetry Section -->
+        <div id="poetrySection" class="poetry-section">
+            <h3>A Little Something from the Heart...</h3>
+            <p class="poem-line">पलकों पर बिठाकर तुझको</p>
+            <p class="poem-line">नूर की रोशनी से सजाना चाहता हूँ,</p>
+            <p class="poem-line">जन्मदिन मुबारक मेरे हमदम,</p>
+            <p class="poem-line">तुझे चाँद सा खूबसूरत बनाना चाहता हूँ।</p>
+            <br>
+            <p class="poem-line">हर लम्हा तेरा हो खुशियों से भरा,</p>
+            <p class="poem-line">कोई गम छू भी न पाए कभी तेरा किनारा,</p>
+            <p class="poem-line">तू हंसे तो दुनिया हंसे साथ तेरे,</p>
+            <p class="poem-line">ऐसी हो ये दुआ मेरी, ऐ सनम प्यारा।</p>
+            <br>
+            <p class="poem-line author">- Your Khan ji ✨</p>
+        </div>
+
+        <!-- Grand Finale Section -->
+        <div id="grandFinaleContainer" class="grand-finale-container">
+            <h2 id="romanticIntro" class="romantic-intro" style="opacity:0;">And now, my dearest <span id="displayGfNameFinale"></span>...</h2>
+            <p id="munnuJiiWish" class="final-wish-text" style="opacity:0;">Happy Birthday, Munnu Jii! ❤️</p>
+
+            <button id="revealPromiseButton" class="surprise-button" style="opacity:0; pointer-events: none;">Reveal My Deepest Wish</button>
+
+            <div id="finalRomanticMessage" class="final-romantic-message" style="opacity:0; transform: scale(0.9);">
+                <p>
+                    You are not just my love; you are my sky, my stars, my every sunrise and sunset.
+                    With you, every day is a celebration, every moment a dream.
+                    My heart belongs to you, today, tomorrow, and forever.
+                </p>
+                <p class="special-emphasis">
+                    May our journey together be filled with endless laughter, boundless joy,
+                    and a love that only grows stronger with each passing breath.
+                    You are my destiny, my beautiful forever.
+                </p>
+                <p class="author-finale">
+                    With all my soul, <br>
+                    Your [Bandar ji ✨]
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const gfNameInput = document.getElementById('gfNameInput');
+        const submitNameButton = document.getElementById('submitNameButton');
+        const nameOverlay = document.getElementById('nameOverlay');
+        const errorMessage = document.getElementById('errorMessage');
+        const mainContent = document.getElementById('mainContent');
+        const teddySection = document.getElementById('teddySection');
+        const displayGfName = document.getElementById('displayGfName'); // For letter
+        const surpriseButton = document.getElementById('surpriseButton');
+        const birthdayLetterContainer = document.getElementById('birthdayLetterContainer');
+        const closeLetterButton = document.getElementById('closeLetterButton');
+        const cakeSection = document.getElementById('cakeSection');
+        const birthdayCake = document.getElementById('birthdayCake');
+        const cutCakeButton = document.getElementById('cutCakeButton');
+        const poetrySection = document.getElementById('poetrySection');
+        const grandFinaleContainer = document.getElementById('grandFinaleContainer');
+        const romanticIntro = document.getElementById('romanticIntro');
+        const munnuJiiWish = document.getElementById('munnuJiiWish');
+        const revealPromiseButton = document.getElementById('revealPromiseButton');
+        const finalRomanticMessage = document.getElementById('finalRomanticMessage');
+        const displayGfNameFinale = document.getElementById('displayGfNameFinale'); // For grand finale
+        const hearts = document.querySelectorAll('.heart');
+
+
+        let correctGfName = ''; // To store the correct name entered
+
+        // --- Step 1: Name Input ---
+        submitNameButton.addEventListener('click', () => {
+            const enteredName = gfNameInput.value.trim();
+            // IMPORTANT: Replace "Miss" with her actual name!
+            const expectedName = "Miss"; // Replace with your girlfriend's actual name
+            const yourNameInLetter = "Bandar ji ✨"; // Replace with your name for the letter
+
+            if (enteredName.toLowerCase() === expectedName.toLowerCase()) {
+                correctGfName = enteredName; // Store the correct name
+                displayGfName.textContent = correctGfName; // Update letter with her name
+                displayGfNameFinale.textContent = correctGfName; // Update finale with her name
+
+                // Replace your name in the letter dynamically
+                document.querySelector('.birthday-letter-container .message').innerHTML =
+                    `With all my endless love,Fi amanillah 👀<br>
+                    Your ${yourNameInLetter}`;
+
+                // Update sender in the final message (already done in HTML, but good to have dynamic option)
+                document.querySelector('.final-romantic-message .author-finale').innerHTML =
+                    `With all my soul, <br>
+                    Your ${yourNameInLetter}`;
+
+
+                nameOverlay.style.opacity = '0';
+                nameOverlay.style.visibility = 'hidden';
+                setTimeout(() => {
+                    nameOverlay.classList.remove('active');
+                    nameOverlay.style.display = 'none'; // Completely remove after fade
+                    mainContent.classList.add('active'); // Activate main content
+                    teddySection.classList.add('active'); // Show teddy
+                }, 500); // Match fade-out transition duration
+            } else {
+                errorMessage.classList.add('show');
+                gfNameInput.classList.add('error');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                    gfNameInput.classList.remove('error');
+                }, 2000);
+            }
+        });
+
+        gfNameInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                submitNameButton.click();
+            }
+        });
+
+        // --- Step 2: Teddy Bear and Surprise Button ---
+        surpriseButton.addEventListener('click', () => {
+            birthdayLetterContainer.classList.add('active');
+            nameOverlay.classList.add('active'); // Re-use overlay for letter popup
+            teddySection.style.display = 'none'; // Hide teddy after click
+        });
+
+        // --- Step 3: Birthday Letter and Close Button ---
+        closeLetterButton.addEventListener('click', () => {
+            birthdayLetterContainer.classList.add('closing'); // Trigger closing animation
+            nameOverlay.classList.remove('active'); // Hide overlay
+            setTimeout(() => {
+                birthdayLetterContainer.classList.remove('active', 'closing');
+                birthdayLetterContainer.style.display = 'none'; // Completely hide
+                cakeSection.classList.add('active'); // Show cake section
+                poetrySection.classList.add('active'); // Show poetry section
+            }, 600); // Match closing animation duration
+        });
+
+        // --- Step 4: Realistic Cake Cut ---
+        cutCakeButton.addEventListener('click', () => {
+            if (birthdayCake.classList.contains('cut')) return; // Prevent multiple cuts
+
+            birthdayCake.classList.add('cut'); // Hide original cake
+            cutCakeButton.textContent = "Enjoy the Cake!"; // Change button text
+            cutCakeButton.disabled = true;
+
+            const cakeWrapper = document.querySelector('.cake-image-wrapper');
+            const numPieces = 8; // More pieces for a more realistic cut
+            const sliceAngle = 360 / numPieces; // Angle for each slice
+
+            for (let i = 0; i < numPieces; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('cake-piece');
+                piece.style.backgroundImage = `url('https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp')`; // NEW CAKE IMAGE
+                
+                // For demonstration, we'll use fixed background positions that roughly cover the cake quarters
+                let bgX, bgY;
+                if (i % 4 === 0) { bgX = 'left'; bgY = 'top'; }
+                else if (i % 4 === 1) { bgX = 'right'; bgY = 'top'; }
+                else if (i % 4 === 2) { bgX = 'left'; bgY = 'bottom'; }
+                else { bgX = 'right'; bgY = 'bottom'; }
+                piece.style.backgroundPosition = `${bgX} ${bgY}`;
+
+                piece.style.width = `calc(50% + 20px)`; // Slightly larger to cover gaps
+                piece.style.height = `calc(50% + 20px)`;
+
+                // Randomize trajectories for a more natural fall
+                const angle = (i * sliceAngle) + (Math.random() * sliceAngle - sliceAngle / 2); // Slightly varied angle
+                const distance = 100 + Math.random() * 100; // Random distance
+                const dx = Math.cos(angle * Math.PI / 180) * distance;
+                const dy = Math.sin(angle * Math.PI / 180) * distance;
+                const rot = (Math.random() - 0.5) * 360; // Random rotation
+
+                piece.style.setProperty('--dx', `${dx}px`);
+                piece.style.setProperty('--dy', `${dy}px`);
+                piece.style.setProperty('--rot', `${rot}deg`);
+                piece.style.animationDelay = `${i * 0.08}s`; // Stagger animation
+
+                cakeWrapper.appendChild(piece);
+            }
+
+            // Show Grand Finale after cake cut animation finishes
+            setTimeout(() => {
+                grandFinaleContainer.classList.add('active');
+                // Sequentially fade in elements
+                setTimeout(() => { romanticIntro.style.opacity = '1'; }, 500);
+                setTimeout(() => { munnuJiiWish.style.opacity = '1'; }, 1500);
+                setTimeout(() => {
+                    revealPromiseButton.style.opacity = '1';
+                    revealPromiseButton.style.pointerEvents = 'auto';
+                }, 2500);
+
+            }, numPieces * 80 + 1000); // Delay based on number of pieces and animation duration
+        });
+
+        // --- Step 5: Grand Finale Reveal ---
+        revealPromiseButton.addEventListener('click', () => {
+            revealPromiseButton.style.opacity = '0';
+            revealPromiseButton.style.pointerEvents = 'none'; // Disable button after click
+
+            // Fade in the deepest wish
+            setTimeout(() => {
+                finalRomanticMessage.style.opacity = '1';
+                finalRomanticMessage.style.transform = 'scale(1)';
+            }, 500);
+
+            // Activate sparkling hearts
+            hearts.forEach(heart => {
+                heart.classList.add('sparkle');
+            });
+        });
+
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            gfNameInput.focus(); // Focus on the input field
+        });
+
+    </script>
+</body>
+</html>
