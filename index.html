@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Birthday Wish for My Princess!</title>
+    <title>Our Special Birthday Wish for My Princess! ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --shadow-color: rgba(0, 0, 0, 0.1);
             --overlay-bg: rgba(0, 0, 0, 0.6);
             --glow-color: #ffbbdd; /* For glowing effects */
+            --accent-gold: #FFD700; /* For a touch of sparkle */
         }
 
         body {
@@ -28,7 +29,8 @@
             min-height: 100vh;
             background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
             color: var(--text-color);
-            overflow: hidden; /* Prevent scroll when modals are open */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll for longer content */
             position: relative;
         }
 
@@ -123,65 +125,68 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 30px; /* Space between sections */
+            gap: 50px; /* Space between sections */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
             width: 100%;
             max-width: 1000px;
             padding: 20px;
+            min-height: 100vh; /* Ensure it takes full height for content */
         }
         .main-content.active {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Teddy Bear Section */
-        .teddy-section {
+        /* Intro Section */
+        .intro-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            text-align: center;
+            gap: 25px;
+            padding: 40px;
+            background: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.6s ease-out 0.5s, transform 0.6s ease-out 0.5s;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s;
+            position: relative; /* For emoji positioning */
         }
-        .main-content.active .teddy-section {
+        .main-content.active .intro-section {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
         }
-
-        .teddy-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background-color: #fff;
-            border: 5px solid var(--primary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            box-shadow: 0 8px 20px var(--shadow-color);
-            position: relative;
-        }
-        .teddy-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center; /* Adjust if needed */
-        }
-        .teddy-text {
-            position: absolute;
-            bottom: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 5px 10px;
-            border-radius: 10px;
+        .intro-section h2 {
             font-family: 'Dancing Script', cursive;
             color: var(--primary-color);
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+        .intro-section p {
             font-size: 1.2em;
+            color: #555;
+            margin-top: 0;
+        }
+        .intro-emoji {
+            font-size: 8em; /* Large emoji for impact */
+            animation: bounce 2s infinite ease-in-out;
+            margin-bottom: 20px;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .date-highlight {
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px var(--glow-color);
         }
 
-        .surprise-button {
+        .action-button {
             background-color: var(--secondary-color);
             color: var(--light-text-color);
             padding: 15px 35px;
@@ -193,15 +198,15 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px var(--shadow-color);
         }
-        .surprise-button:hover {
+        .action-button:hover {
             background-color: var(--primary-color);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* Birthday Letter Section */
+        /* Birthday Letter Section (Modal) */
         .birthday-letter-container {
-            position: fixed; /* Use fixed for pop-up behavior */
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
@@ -218,7 +223,7 @@
             transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s ease-out;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* Enable scrolling for long letters */
+            overflow-y: auto;
             border: 3px solid var(--primary-color);
         }
         .birthday-letter-container.active {
@@ -226,7 +231,6 @@
             visibility: visible;
             transform: translate(-50%, -50%) scale(1);
         }
-
         .birthday-letter-container h1 {
             font-family: 'Dancing Script', cursive;
             color: var(--primary-color);
@@ -244,7 +248,7 @@
             font-size: 1.1em;
             line-height: 1.7;
             margin-bottom: 20px;
-            text-align: left; /* Make paragraphs left-aligned for readability */
+            text-align: left;
         }
         .birthday-letter-container .message {
             margin-top: 30px;
@@ -253,100 +257,141 @@
             text-align: right;
             margin-bottom: 30px;
         }
-
-        .close-letter-button {
-            background-color: var(--primary-color);
-            color: var(--light-text-color);
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            align-self: center; /* Center the button in flex container */
-            margin-top: 20px;
-        }
-        .close-letter-button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        /* Letter closing animation */
         .birthday-letter-container.closing {
-            transform: translate(100vw, -50%) scale(0.5); /* Move off-screen right */
+            transform: translate(100vw, -50%) scale(0.5);
             opacity: 0;
         }
 
 
-        /* Cake Section */
-        .cake-section {
+        /* 3D Cake Section */
+        .cake-3d-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            padding: 40px 20px;
+            background: var(--card-background);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            margin-top: 40px;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid var(--secondary-color);
         }
-        .cake-section.active {
+        .cake-3d-section.active {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
+        }
+        .cake-3d-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            perspective: 1000px; /* For 3D effect */
+            margin-bottom: 20px;
+            transform-style: preserve-3d;
+            transform: rotateX(30deg) rotateY(0deg); /* Initial cake orientation */
+            transition: transform 1s ease-in-out;
         }
 
-        .cake-image-wrapper {
-            position: relative;
-            width: 300px; /* Adjust size */
-            height: 300px;
+        .cake-layer {
+            position: absolute;
+            width: 100%;
+            height: 60px; /* Thickness of each layer */
+            border-radius: 50%;
+            background: #f0f0f0; /* Base color */
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            transform-style: preserve-3d;
+            transition: all 1s ease-in-out; /* For cutting animation */
+            left: 0;
+            top: 50%;
+            margin-top: -30px; /* Half of height to center vertically */
         }
-        .cake-image {
+
+        .layer-1 {
+            background: linear-gradient(to right, #ffb3c1, #a7e9af, #a7d9f5, #fdfd96); /* Multi-color gradient */
+            transform: rotateX(90deg) translateZ(30px); /* Top layer */
+            z-index: 3;
+        }
+        .layer-2 {
+            background: linear-gradient(to right, #e6b3ff, #f5c4d6, #ffb3c1, #a7e9af);
+            transform: rotateX(90deg) translateZ(0px); /* Middle layer */
+            z-index: 2;
+        }
+        .layer-3 {
+            background: linear-gradient(to right, #a7d9f5, #fdfd96, #e6b3ff, #f5c4d6);
+            transform: rotateX(90deg) translateZ(-30px); /* Bottom layer */
+            z-index: 1;
+        }
+
+        .cake-top-disc { /* The flat top surface */
+            position: absolute;
+            top: 50%;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            transition: transform 0.5s ease-out;
+            background: radial-gradient(circle at 50% 50%, #fff 0%, #f0f0f0 100%);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: rotateX(90deg) translateZ(60px); /* On top of the tallest layer */
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            transition: all 1s ease-in-out;
+            margin-top: -50%; /* Center vertically */
         }
-        .cake-image.cut {
-            opacity: 0; /* Hide original cake */
-        }
-
-        .cake-piece {
+        
+        .cake-candle {
             position: absolute;
-            background-image: url('https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp'); /* NEW CAKE IMAGE */
-            background-size: 300px 300px; /* Match original cake size */
-            width: 150px;
-            height: 150px;
-            opacity: 0;
-            animation: fallAndFade 1.5s ease-out forwards;
-            pointer-events: none; /* Don't interfere with clicks */
-            top: 50%;
+            width: 8px;
+            height: 25px;
+            background-color: #8B4513; /* brown */
+            border-radius: 2px;
+            bottom: 50%; /* Position above cake top */
             left: 50%;
-            transform: translate(-50%, -50%); /* Center pieces initially */
+            transform: translate(-50%, -10px) translateZ(60px); /* On top of cake-top */
+            z-index: 5;
+            transition: all 1s ease-in-out;
+        }
+        .cake-candle::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid #FFD700; /* flame */
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px orange) drop-shadow(0 0 10px yellow);
+            animation: flicker 0.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: translateX(-50%) translateY(-2px) scale(1.05) rotate(2deg); opacity: 0.9; }
+            100% { transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); opacity: 1; }
         }
 
-        @keyframes fallAndFade {
-            0% { opacity: 1; transform: translate(var(--initial-dx, -50%), var(--initial-dy, -50%)) scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.5) rotate(var(--rot)); }
-        }
-
-
-        .cut-cake-button {
-            background-color: var(--primary-color);
-            color: var(--light-text-color);
-            padding: 15px 35px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-        .cut-cake-button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
+        /* Cake Cut Animations */
+        .cake-3d-container.cut .layer-1 { transform: rotateX(90deg) translateZ(30px) translateX(-40px) translateY(-20px); opacity: 0; }
+        .cake-3d-container.cut .layer-2 { transform: rotateX(90deg) translateZ(0px) translateX(20px) translateY(-30px); opacity: 0; }
+        .cake-3d-container.cut .layer-3 { transform: rotateX(90deg) translateZ(-30px) translateX(-30px) translateY(40px); opacity: 0; }
+        .cake-3d-container.cut .cake-top-disc { transform: rotateX(90deg) translateZ(60px) translateX(50px) translateY(10px); opacity: 0; }
+        .cake-3d-container.cut .cake-candle { opacity: 0; transform: translate(-50%, -10px) translateZ(60px) translateX(60px) translateY(20px); }
 
         /* Poetry Section */
         .poetry-section {
@@ -358,8 +403,8 @@
             width: 90%;
             text-align: center;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(100px); /* Start lower for slide-up */
+            transition: opacity 1s ease-out, transform 1s ease-out; /* 1s duration */
             margin-top: 40px;
             border: 2px solid var(--secondary-color);
         }
@@ -386,12 +431,13 @@
             color: #666;
         }
 
-        /* Grand Finale Section */
-        .grand-finale-container {
+        /* Promise Letter Section */
+        .promise-letter-container {
             margin-top: 60px;
             text-align: center;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transform: translateY(100px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
             max-width: 700px;
             width: 90%;
             display: flex;
@@ -404,29 +450,18 @@
             box-shadow: 0 15px 40px var(--shadow-color);
             border: 3px solid var(--primary-color);
         }
-        .grand-finale-container.active {
+        .promise-letter-container.active {
             opacity: 1;
+            transform: translateY(0);
         }
-
-        .romantic-intro {
+        .promise-letter-container h2 {
             font-family: 'Dancing Script', cursive;
             color: var(--primary-color);
             font-size: 2.8em;
             margin-bottom: 0;
-            transition: opacity 1s ease-in-out;
+            text-shadow: 0 0 5px var(--glow-color);
         }
-
-        .final-wish-text {
-            font-family: 'Dancing Script', cursive;
-            color: var(--primary-color);
-            font-size: 3.2em;
-            text-shadow: 0 0 12px var(--glow-color), 0 0 25px var(--glow-color);
-            line-height: 1.2;
-            margin: 20px 0;
-            transition: opacity 1s ease-in-out, transform 1s ease-out;
-        }
-
-        .final-romantic-message {
+        .promise-letter-content {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.15em;
             line-height: 1.8;
@@ -434,23 +469,82 @@
             text-align: center;
             max-width: 550px;
             margin: 0 auto;
-            transition: opacity 1s ease-in-out, transform 1s ease-out;
         }
-        .final-romantic-message p {
-            margin-bottom: 1em;
-        }
-        .final-romantic-message .special-emphasis {
+        .promise-letter-content .special-emphasis {
             font-weight: 600;
             color: var(--secondary-color);
             font-style: italic;
             margin-top: 25px;
+            display: block;
         }
-        .final-romantic-message .author-finale {
+        .promise-letter-content .author-promise {
             margin-top: 30px;
             font-family: 'Dancing Script', cursive;
             font-size: 1.5em;
             color: var(--primary-color);
+            display: block;
         }
+
+        /* Gift Card Pamphlet Section */
+        .gift-card-pamphlet {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            max-width: 700px;
+            width: 90%;
+            padding: 40px 20px;
+            background: linear-gradient(145deg, #f8f8f8, #ffe0f0);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2), 0 0 20px var(--glow-color);
+            border: 5px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .gift-card-pamphlet.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gift-card-pamphlet::before {
+            content: '💖';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2em;
+            opacity: 0.6;
+        }
+        .gift-card-pamphlet::after {
+            content: '✨';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2em;
+            opacity: 0.6;
+        }
+        .gift-card-pamphlet h3 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px var(--glow-color);
+        }
+        .gift-card-pamphlet p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        .gift-card-pamphlet .author-gift {
+            font-style: italic;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            display: block;
+        }
+
 
         /* Decorations (Hearts) */
         .decorations {
@@ -491,6 +585,8 @@
         .heart:nth-child(6) { width: 28px; height: 28px; top: 45%; left: 20%; animation-delay: 1s; opacity: 0.65; }
         .heart:nth-child(7) { width: 33px; height: 33px; top: 70%; left: 90%; animation-delay: 3.5s; opacity: 0.7; }
         .heart:nth-child(8) { width: 22px; height: 22px; top: 20%; left: 60%; animation-delay: 5s; opacity: 0.55; }
+        .heart:nth-child(9) { width: 27px; height: 27px; top: 55%; left: 40%; animation-delay: 2.5s; opacity: 0.6; }
+        .heart:nth-child(10) { width: 32px; height: 32px; top: 18%; left: 30%; animation-delay: 4s; opacity: 0.7; }
 
         @keyframes float {
             0% { transform: translateY(0px) rotate(-45deg); }
@@ -511,29 +607,43 @@
         @media (max-width: 768px) {
             .name-input-popup { padding: 30px; }
             .name-input-popup h3 { font-size: 1.8em; }
-            .teddy-circle { width: 150px; height: 150px; }
-            .teddy-text { font-size: 1em; }
-            .surprise-button, .cut-cake-button { padding: 12px 25px; font-size: 1em; }
+            .intro-section { padding: 30px; gap: 20px; }
+            .intro-section h2 { font-size: 2.2em; }
+            .intro-section p { font-size: 1em; }
+            .intro-emoji { font-size: 6em; }
+            .action-button { padding: 12px 25px; font-size: 1em; }
             .birthday-letter-container { padding: 30px; }
             .birthday-letter-container h1 { font-size: 2.2em; }
             .birthday-letter-container h2 { font-size: 1.4em; }
             .birthday-letter-container p { font-size: 0.95em; }
+            .cake-3d-section { padding: 30px; }
+            .cake-3d-section h2 { font-size: 2em; }
+            .poetry-section { padding: 30px; }
             .poetry-section h3 { font-size: 2em; }
             .poetry-section .poem-line { font-size: 1em; }
-            .romantic-intro { font-size: 2.2em; }
-            .final-wish-text { font-size: 2.5em; margin-top: 30px; }
-            .final-romantic-message { font-size: 1em; }
-            .final-romantic-message .author-finale { font-size: 1.2em; }
+            .promise-letter-container h2 { font-size: 2.2em; }
+            .promise-letter-content { font-size: 1em; }
+            .promise-letter-content .author-promise { font-size: 1.2em; }
+            .gift-card-pamphlet { padding: 30px; }
+            .gift-card-pamphlet h3 { font-size: 2.5em; }
+            .gift-card-pamphlet p { font-size: 1em; }
+            .gift-card-pamphlet .author-gift { font-size: 1.2em; }
         }
 
         @media (max-width: 480px) {
             .name-input-popup { padding: 20px; }
             .name-input-popup h3 { font-size: 1.5em; }
+            .intro-section { padding: 20px; gap: 15px; }
+            .intro-section h2 { font-size: 1.8em; }
+            .intro-section p { font-size: 0.9em; }
+            .intro-emoji { font-size: 5em; }
             .birthday-letter-container { padding: 20px; }
             .birthday-letter-container h1 { font-size: 1.8em; }
             .birthday-letter-container h2 { font-size: 1.2em; }
-            .romantic-intro { font-size: 1.8em; }
-            .final-wish-text { font-size: 2em; margin-top: 20px; }
+            .cake-3d-section h2 { font-size: 1.8em; }
+            .poetry-section h3 { font-size: 1.8em; }
+            .promise-letter-container h2 { font-size: 1.8em; }
+            .gift-card-pamphlet h3 { font-size: 2em; }
         }
     </style>
 </head>
@@ -547,105 +657,124 @@
         <div class="heart"></div>
         <div class="heart"></div>
         <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
     </div>
 
     <!-- Name Input Overlay -->
     <div id="nameOverlay" class="overlay active">
         <div class="name-input-popup">
-            <h3> Special Surprises for you !</h3>
-            <p>Please enter your lovely name to continue!</p>
+            <h3>Your Birthday Surprises Await! ✨</h3>
+            <p>Please enter your special name, my love, to begin our celebration! ❤️</p>
             <input type="text" id="gfNameInput" placeholder="Enter your name...">
             <button id="submitNameButton">Enter</button>
-            <p id="errorMessage" class="error-message">That's not it! Try again, my dear Miss.</p>
+            <p id="errorMessage" class="error-message">That's not it! Try again, my dear Princess. 😉</p>
         </div>
     </div>
 
     <!-- Main Content -->
     <div id="mainContent" class="main-content">
-        <!-- Teddy Bear Section -->
-        <div id="teddySection" class="teddy-section">
-            <div class="teddy-circle">
-                <img src="https://i.ibb.co/V94Bv7r/teddy-bear-on-yellow-background.jpg" alt="Cute Teddy Bear" class="teddy-image"> <!-- NEW TEDDY BEAR IMAGE -->
-                <span class="teddy-text">A surprise awaits!</span>
-            </div>
-            <button id="surpriseButton" class="surprise-button">Click for Your Surprise!</button>
+        <!-- Intro Section -->
+        <div id="introSection" class="intro-section">
+            <span class="intro-emoji" role="img" aria-label="Waving Hand">🙋</span>
+            <h2 id="introGreeting">Happy Birthday, My Dearest <span id="displayGfNameIntro"></span>!</h2>
+            <p>Today, <span class="date-highlight">September 27, 2025</span>, we celebrate YOU! 🎂</p>
+            <button id="startJourneyButton" class="action-button">Unwrap Your Special Day! 🎁</button>
         </div>
 
-        <!-- Birthday Letter Pop-up (Hidden initially) -->
+        <!-- Birthday Letter Section (Hidden initially) -->
         <div id="birthdayLetterContainer" class="birthday-letter-container">
-            <h1>Happy Birthday, My Dearest <span id="displayGfName"></span>!</h1>
-            <h2>Wishing you a day as beautiful as you are!</h2>
+            <h1>My Heart's Birthday Wish for You... 🌹</h1>
+            <h2>To the one who lights up my world, <span id="displayGfNameLetter"></span>!</h2>
             <p>
-                Every moment with you is a cherished memory, and today, on your special day,
-                I want to celebrate all the joy, love, and laughter you bring into my life.
-                You are the most incredible person I know, and I'm so lucky to have you.
+                Happy Birthday, my love! Every day with you is a gift, and today, as we celebrate you,
+                my heart overflows with joy. You are my sunshine, my strength, and my most cherished dream.
+                Our love story is a true 'Amar Prem' – an immortal love that grows with every sunrise. ✨
             </p>
             <p>
-                May your day be filled with happiness, surprises, and everything wonderful.
-                You deserve the world, and more!
-                Thank you for being you, for your kindness, your warmth, and your endless love.
-                You light up my world in ways I never imagined.
+                You are my 'Jeevan Saathi', the companion of my life, and I cherish every step we've taken.
+                Thank you for your warmth, your understanding, and for filling my world with boundless happiness.
+                With you, even the simplest days feel like a grand celebration. 💑
             </p>
             <p>
-                Here's to many more birthdays, many more shared dreams, and a lifetime of happiness together.
-                I love you more than words can say.You mean everything for me Jana ✨ 💗!
+                May your special day be filled with 'Har pal Haseen, Har lamha Khoobsurat' – every moment beautiful, every instant lovely.
+                Here's to a lifetime more of shared dreams, endless laughter, and a love that knows no bounds.
+                You are my everything, Jana! 💖
             </p>
             <div class="message">
-                With all my endless love,Fi amanillah 👀<br>
-                Your [Bandar ji ✨]
+                With all my eternal love, Fi amanillah 👀<br>
+                Your [Your Love]
             </div>
-            <button id="closeLetterButton" class="close-letter-button">Close Letter</button>
+            <button id="closeLetterButton" class="action-button">Ready for More Surprises? ➡️</button>
         </div>
 
-        <!-- Cake Section -->
-        <div id="cakeSection" class="cake-section">
-            <h2>Time for Cake! Make a Wish!</h2>
-            <div class="cake-image-wrapper">
-                <img src="https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp" alt="Realistic Birthday Cake" class="cake-image" id="birthdayCake"> <!-- NEW CAKE IMAGE -->
-                <!-- Cake pieces will be dynamically added here -->
+        <!-- 3D Cake Section -->
+        <div id="cake3dSection" class="cake-3d-section">
+            <h2>Time for Cake! Make a Wish, My Love! ✨</h2>
+            <div id="cake3dContainer" class="cake-3d-container">
+                <div class="cake-layer layer-3"></div>
+                <div class="cake-layer layer-2"></div>
+                <div class="cake-layer layer-1"></div>
+                <div class="cake-top-disc">Wish for Us!</div>
+                <div class="cake-candle"></div>
             </div>
-            <button id="cutCakeButton" class="cut-cake-button">Cut the Cake!</button>
+            <button id="cutCakeButton" class="action-button">Cut the Cake! 🍰</button>
         </div>
 
         <!-- Poetry Section -->
         <div id="poetrySection" class="poetry-section">
-            <h3>A Little Something from the Heart...</h3>
-            <p class="poem-line">पलकों पर बिठाकर तुझको</p>
-            <p class="poem-line">नूर की रोशनी से सजाना चाहता हूँ,</p>
-            <p class="poem-line">जन्मदिन मुबारक मेरे हमदम,</p>
-            <p class="poem-line">तुझे चाँद सा खूबसूरत बनाना चाहता हूँ।</p>
+            <h3>A Little Something from the Heart... ❤️</h3>
+            <p class="poem-line">पलकें झुकी, दिल धड़का जब से,</p>
+            <p class="poem-line">तेरा साथ मिला है तब से।</p>
+            <p class="poem-line">सालों की ये प्रेम कहानी,</p>
+            <p class="poem-line">बन गई है मेरी जिंदगानी।</p>
             <br>
-            <p class="poem-line">हर लम्हा तेरा हो खुशियों से भरा,</p>
-            <p class="poem-line">कोई गम छू भी न पाए कभी तेरा किनारा,</p>
-            <p class="poem-line">तू हंसे तो दुनिया हंसे साथ तेरे,</p>
-            <p class="poem-line">ऐसी हो ये दुआ मेरी, ऐ सनम प्यारा।</p>
+            <p class="poem-line">हर लम्हा तुझ संग गुजारा,</p>
+            <p class="poem-line">हर पल ने दिया है सहारा।</p>
+            <p class="poem-line">खुशियाँ हों या गम का साया,</p>
+            <p class="poem-line">तूने हरदम साथ निभाया।</p>
             <br>
-            <p class="poem-line author">- Your Khan ji ✨</p>
+            <p class="poem-line">ये जन्मदिन की बेला है,</p>
+            <p class="poem-line">प्यार का गहरा मेला है।</p>
+            <p class="poem-line">वादा है हर जन्म में तेरा,</p>
+            <p class="poem-line">रहूँगा मैं बस तेरा, तेरा।</p>
+            <br>
+            <p class="poem-line author">- Your [Miya jii]</p>
+            <button id="revealPromiseButton" class="action-button" style="margin-top: 30px;">Read My Promise! 💖</button>
         </div>
 
-        <!-- Grand Finale Section -->
-        <div id="grandFinaleContainer" class="grand-finale-container">
-            <h2 id="romanticIntro" class="romantic-intro" style="opacity:0;">And now, my dearest <span id="displayGfNameFinale"></span>...</h2>
-            <p id="munnuJiiWish" class="final-wish-text" style="opacity:0;">Happy Birthday, Munnu Jii! ❤️</p>
-
-            <button id="revealPromiseButton" class="surprise-button" style="opacity:0; pointer-events: none;">Reveal My Deepest Wish</button>
-
-            <div id="finalRomanticMessage" class="final-romantic-message" style="opacity:0; transform: scale(0.9);">
+        <!-- Promise Letter Section -->
+        <div id="promiseLetterContainer" class="promise-letter-container">
+            <h2>My Dearest <span id="displayGfNamePromise"></span>, My Forever Promise to You... 💍</h2>
+            <div class="promise-letter-content">
                 <p>
-                    You are not just my love; you are my sky, my stars, my every sunrise and sunset.
-                    With you, every day is a celebration, every moment a dream.
-                    My heart belongs to you, today, tomorrow, and forever.
+                    I am promising you that I will never leave you alone.
+                    Hum aapse wada karte Hain K Kabhi apka sath Nahi chodenge, hamesha aapko khus rakhenge.
+                    Hum aapse wada karte Hain K chahe koi apka Sath de na de, hum hamesha Aapka sath denge,
+                    hamesha aapko Dil ki sabse uche muqam par rakhenge.
                 </p>
                 <p class="special-emphasis">
-                    May our journey together be filled with endless laughter, boundless joy,
-                    and a love that only grows stronger with each passing breath.
-                    You are my destiny, my beautiful forever.
+                    (I am promising you that I will never leave you alone. I promise you that I will never leave your side, I will always keep you happy. I promise you that no matter if anyone supports you or not, I will always support you, I will always keep you at the highest place in my heart.)
                 </p>
-                <p class="author-finale">
-                    With all my soul, <br>
-                    Your [Bandar ji ✨]
+                <p class="author-promise">
+                    With all my soul and an eternity of love, <br>
+                    Your [Your Jaan]
                 </p>
             </div>
+            <button id="revealGiftButton" class="action-button">Your Gift Card! 🎉</button>
+        </div>
+
+        <!-- DIY Stylish Gift Card Pamphlet -->
+        <div id="giftCardPamphlet" class="gift-card-pamphlet">
+            <h3>A Special Birthday Message Just For You! 💌</h3>
+            <p>
+                छुट्टी अच्छे से एन्जॉय करिएगा मेरी जाना जी।
+                हम आपका बर्थडे और स्पेशल बनाना चाहते थे लेकिन नहीं बना पाए सॉरी,
+                लेकिन हमसे जितना कुछ हुआ हमने किया।
+                इंशा अल्लाह अगली बार इससे भी अच्छा बनाने की कोशिश करेंगे।
+                अपना ख्याल रखिएगा मेरी शहज़ादी जी ✨💗।
+            </p>
+            <p class="author-gift">With Immense Love, <br> Your [Your Love]</p>
         </div>
 
     </div>
@@ -656,23 +785,29 @@
         const nameOverlay = document.getElementById('nameOverlay');
         const errorMessage = document.getElementById('errorMessage');
         const mainContent = document.getElementById('mainContent');
-        const teddySection = document.getElementById('teddySection');
-        const displayGfName = document.getElementById('displayGfName'); // For letter
-        const surpriseButton = document.getElementById('surpriseButton');
-        const birthdayLetterContainer = document.getElementById('birthdayLetterContainer');
-        const closeLetterButton = document.getElementById('closeLetterButton');
-        const cakeSection = document.getElementById('cakeSection');
-        const birthdayCake = document.getElementById('birthdayCake');
-        const cutCakeButton = document.getElementById('cutCakeButton');
-        const poetrySection = document.getElementById('poetrySection');
-        const grandFinaleContainer = document.getElementById('grandFinaleContainer');
-        const romanticIntro = document.getElementById('romanticIntro');
-        const munnuJiiWish = document.getElementById('munnuJiiWish');
-        const revealPromiseButton = document.getElementById('revealPromiseButton');
-        const finalRomanticMessage = document.getElementById('finalRomanticMessage');
-        const displayGfNameFinale = document.getElementById('displayGfNameFinale'); // For grand finale
-        const hearts = document.querySelectorAll('.heart');
 
+        const introSection = document.getElementById('introSection');
+        const displayGfNameIntro = document.getElementById('displayGfNameIntro');
+        const startJourneyButton = document.getElementById('startJourneyButton');
+
+        const birthdayLetterContainer = document.getElementById('birthdayLetterContainer');
+        const displayGfNameLetter = document.getElementById('displayGfNameLetter');
+        const closeLetterButton = document.getElementById('closeLetterButton');
+
+        const cake3dSection = document.getElementById('cake3dSection');
+        const cake3dContainer = document.getElementById('cake3dContainer');
+        const cutCakeButton = document.getElementById('cutCakeButton');
+
+        const poetrySection = document.getElementById('poetrySection');
+        const revealPromiseButton = document.getElementById('revealPromiseButton');
+
+        const promiseLetterContainer = document.getElementById('promiseLetterContainer');
+        const displayGfNamePromise = document.getElementById('displayGfNamePromise');
+        const revealGiftButton = document.getElementById('revealGiftButton');
+
+        const giftCardPamphlet = document.getElementById('giftCardPamphlet');
+
+        const hearts = document.querySelectorAll('.heart');
 
         let correctGfName = ''; // To store the correct name entered
 
@@ -681,23 +816,25 @@
             const enteredName = gfNameInput.value.trim();
             // IMPORTANT: Replace "Miss" with her actual name!
             const expectedName = "Miss"; // Replace with your girlfriend's actual name
-            const yourNameInLetter = "Bandar ji ✨"; // Replace with your name for the letter
+            const yourNameSignOffLetter = "Your Love"; // For birthday letter
+            const yourNameSignOffPromise = "Your Jaan"; // For promise letter
+            const yourNameSignOffGift = "Your Love"; // For gift card
 
             if (enteredName.toLowerCase() === expectedName.toLowerCase()) {
                 correctGfName = enteredName; // Store the correct name
-                displayGfName.textContent = correctGfName; // Update letter with her name
-                displayGfNameFinale.textContent = correctGfName; // Update finale with her name
+                displayGfNameIntro.textContent = correctGfName; // Update intro with her name
+                displayGfNameLetter.textContent = correctGfName; // Update letter with her name
+                displayGfNamePromise.textContent = correctGfName; // Update promise with her name
 
                 // Replace your name in the letter dynamically
                 document.querySelector('.birthday-letter-container .message').innerHTML =
-                    `With all my endless love,Fi amanillah 👀<br>
-                    Your ${yourNameInLetter}`;
-
-                // Update sender in the final message (already done in HTML, but good to have dynamic option)
-                document.querySelector('.final-romantic-message .author-finale').innerHTML =
-                    `With all my soul, <br>
-                    Your ${yourNameInLetter}`;
-
+                    `With all my eternal love, Fi amanillah 👀<br>
+                    Your ${yourNameSignOffLetter}`;
+                document.querySelector('.promise-letter-content .author-promise').innerHTML =
+                    `With all my soul and an eternity of love, <br>
+                    Your ${yourNameSignOffPromise}`;
+                document.querySelector('.gift-card-pamphlet .author-gift').innerHTML =
+                    `With Immense Love, <br> Your ${yourNameSignOffGift}`;
 
                 nameOverlay.style.opacity = '0';
                 nameOverlay.style.visibility = 'hidden';
@@ -705,7 +842,7 @@
                     nameOverlay.classList.remove('active');
                     nameOverlay.style.display = 'none'; // Completely remove after fade
                     mainContent.classList.add('active'); // Activate main content
-                    teddySection.classList.add('active'); // Show teddy
+                    introSection.classList.add('active'); // Show intro section
                 }, 500); // Match fade-out transition duration
             } else {
                 errorMessage.classList.add('show');
@@ -723,94 +860,48 @@
             }
         });
 
-        // --- Step 2: Teddy Bear and Surprise Button ---
-        surpriseButton.addEventListener('click', () => {
+        // --- Step 2: Intro Section and Start Journey Button ---
+        startJourneyButton.addEventListener('click', () => {
             birthdayLetterContainer.classList.add('active');
             nameOverlay.classList.add('active'); // Re-use overlay for letter popup
-            teddySection.style.display = 'none'; // Hide teddy after click
+            introSection.style.display = 'none'; // Hide intro after click
         });
 
         // --- Step 3: Birthday Letter and Close Button ---
         closeLetterButton.addEventListener('click', () => {
-            birthdayLetterContainer.classList.add('closing'); // Trigger closing animation
+            birthdayLetterContainer.classList.add('closing');
             nameOverlay.classList.remove('active'); // Hide overlay
             setTimeout(() => {
                 birthdayLetterContainer.classList.remove('active', 'closing');
                 birthdayLetterContainer.style.display = 'none'; // Completely hide
-                cakeSection.classList.add('active'); // Show cake section
-                poetrySection.classList.add('active'); // Show poetry section
+                cake3dSection.classList.add('active'); // Show 3D cake section
             }, 600); // Match closing animation duration
         });
 
-        // --- Step 4: Realistic Cake Cut ---
+        // --- Step 4: 3D Cake Cut and Auto Slide-Up to Poetry ---
         cutCakeButton.addEventListener('click', () => {
-            if (birthdayCake.classList.contains('cut')) return; // Prevent multiple cuts
+            if (cake3dContainer.classList.contains('cut')) return; // Prevent multiple cuts
 
-            birthdayCake.classList.add('cut'); // Hide original cake
-            cutCakeButton.textContent = "Enjoy the Cake!"; // Change button text
+            cake3dContainer.classList.add('cut'); // Trigger cake cutting animation
+            cutCakeButton.textContent = "Sweetness Overload! 🍰"; // Change button text
             cutCakeButton.disabled = true;
 
-            const cakeWrapper = document.querySelector('.cake-image-wrapper');
-            const numPieces = 8; // More pieces for a more realistic cut
-            const sliceAngle = 360 / numPieces; // Angle for each slice
-
-            for (let i = 0; i < numPieces; i++) {
-                const piece = document.createElement('div');
-                piece.classList.add('cake-piece');
-                piece.style.backgroundImage = `url('https://i.ibb.co/V94Bv7r/birthday-cake-with-candles-and-sweets-png.webp')`; // NEW CAKE IMAGE
-                
-                // For demonstration, we'll use fixed background positions that roughly cover the cake quarters
-                let bgX, bgY;
-                if (i % 4 === 0) { bgX = 'left'; bgY = 'top'; }
-                else if (i % 4 === 1) { bgX = 'right'; bgY = 'top'; }
-                else if (i % 4 === 2) { bgX = 'left'; bgY = 'bottom'; }
-                else { bgX = 'right'; bgY = 'bottom'; }
-                piece.style.backgroundPosition = `${bgX} ${bgY}`;
-
-                piece.style.width = `calc(50% + 20px)`; // Slightly larger to cover gaps
-                piece.style.height = `calc(50% + 20px)`;
-
-                // Randomize trajectories for a more natural fall
-                const angle = (i * sliceAngle) + (Math.random() * sliceAngle - sliceAngle / 2); // Slightly varied angle
-                const distance = 100 + Math.random() * 100; // Random distance
-                const dx = Math.cos(angle * Math.PI / 180) * distance;
-                const dy = Math.sin(angle * Math.PI / 180) * distance;
-                const rot = (Math.random() - 0.5) * 360; // Random rotation
-
-                piece.style.setProperty('--dx', `${dx}px`);
-                piece.style.setProperty('--dy', `${dy}px`);
-                piece.style.setProperty('--rot', `${rot}deg`);
-                piece.style.animationDelay = `${i * 0.08}s`; // Stagger animation
-
-                cakeWrapper.appendChild(piece);
-            }
-
-            // Show Grand Finale after cake cut animation finishes
+            // After cake animation (1s duration), auto slide-up the poetry section
             setTimeout(() => {
-                grandFinaleContainer.classList.add('active');
-                // Sequentially fade in elements
-                setTimeout(() => { romanticIntro.style.opacity = '1'; }, 500);
-                setTimeout(() => { munnuJiiWish.style.opacity = '1'; }, 1500);
-                setTimeout(() => {
-                    revealPromiseButton.style.opacity = '1';
-                    revealPromiseButton.style.pointerEvents = 'auto';
-                }, 2500);
-
-            }, numPieces * 80 + 1000); // Delay based on number of pieces and animation duration
+                poetrySection.classList.add('active');
+            }, 1000); // Matches cake cut transition duration
         });
 
-        // --- Step 5: Grand Finale Reveal ---
+        // --- Step 5: Reveal Promise Letter ---
         revealPromiseButton.addEventListener('click', () => {
-            revealPromiseButton.style.opacity = '0';
-            revealPromiseButton.style.pointerEvents = 'none'; // Disable button after click
+            promiseLetterContainer.classList.add('active'); // Slide up Promise Letter
+        });
 
-            // Fade in the deepest wish
-            setTimeout(() => {
-                finalRomanticMessage.style.opacity = '3';
-                finalRomanticMessage.style.transform = 'scale(1)';
-            }, 500);
+        // --- Step 6: Reveal Gift Card Pamphlet ---
+        revealGiftButton.addEventListener('click', () => {
+            giftCardPamphlet.classList.add('active'); // Slide up Gift Card Pamphlet
 
-            // Activate sparkling hearts
+            // Activate sparkling hearts for the grand finale
             hearts.forEach(heart => {
                 heart.classList.add('sparkle');
             });
